@@ -1,0 +1,35 @@
+步骤：
+   1、把三个切面和SalaryManagerImpl放入到spring容器中
+   2、进行aop的配置
+  	<aop:config>
+    	<aop:pointcut 
+    		expression="execution(* com.itheima08.spring.aop.aspects.SalaryManagerImpl.*(..))" 
+    		id="perform"/>
+    	<aop:aspect ref="logger">
+    		<aop:before method="logging" pointcut-ref="perform"/>
+    	</aop:aspect>
+    	<aop:aspect ref="security">
+    		<aop:before method="security" pointcut-ref="perform"/>
+    	</aop:aspect>
+    	<aop:aspect ref="privilege">
+    		<aop:around method="privilegeControl" pointcut-ref="perform"/>
+    	</aop:aspect>
+    </aop:config>
+ 
+说明：
+  	 一个切入点表达式可以配置很都个切面,但是由于没有拦截器栈的概念，所以如果一个切入点表达式跟很多个切面的时候，
+  	 会导致比较乱
+  	 
+  	 在aop:config中可以配置
+  	 	多个切入点表达式
+  	 	多个切面
+  	 	  	每一个切面中可以配置很多个通知
+  	 	最主要的用途：
+  	 	   1、spring声明事务处理
+  	 	   2、缓存的处理
+  	 	   3、日志、权限等
+  	 	   
+特别注意：
+	spring容器会根据目标类有没有实现接口，自动选择jdk还是cglib
+   		如果目标类实现了接口，则jdk
+   		如果目标类没有实现接口，则cglib

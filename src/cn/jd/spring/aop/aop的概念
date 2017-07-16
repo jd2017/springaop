@@ -1,0 +1,31 @@
+1、切面
+	事务、日志、权限、安全性的框架都是切面
+2、通知
+	切面中的方法就是通知
+	   public class Transaction {//切面
+			public void beginTransaction(){//通知
+				System.out.println("begin transaction");
+			}
+			
+			public void commit(){//通知
+				System.out.println("commit");
+			}
+		}
+3、目标类
+             用户想要做的事情
+4、连接点
+	 在客户端调用哪个方法，哪个方法就是连接点
+5、切入点
+	    if(method.getName().equals("savePerson")||
+				method.getName().equals("updatePerson")){
+			this.transaction.beginTransaction();
+			method.invoke(this.target, args);//调用目标方法
+			this.transaction.commit();
+		}else{
+			method.invoke(this.target, args);//调用目标方法
+		}
+		在拦截器中的invoke方法中，必须符合if条件语句中的内容才能开启事务和提交事务，所以
+		if条件语句中的内容可以看做切入点
+6、织入：
+     形成代理对象的方法体的过程   描述的是一个过程
+	   
